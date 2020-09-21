@@ -1,7 +1,6 @@
- package controllers;
+package controllers;
 
 import java.io.IOException;
-import java.sql.Timestamp;
 
 import javax.persistence.EntityManager;
 import javax.servlet.ServletException;
@@ -13,17 +12,18 @@ import javax.servlet.http.HttpServletResponse;
 import models.Task;
 import utils.DBUtil;
 
+
 /**
- * Servlet implementation class UpdateServlet
+ * Servlet implementation class DestroyServlet
  */
-@WebServlet("/update")
-public class UpdateServlet extends HttpServlet {
+@WebServlet("/destroy")
+public class DestroyServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public UpdateServlet() {
+    public DestroyServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -38,13 +38,8 @@ public class UpdateServlet extends HttpServlet {
 
             Task t = em.find(Task.class, (Integer)(request.getSession().getAttribute("task_id")));
 
-            Timestamp currentTime = new Timestamp(System.currentTimeMillis());
-            t.setUpdated_at(currentTime);
-
-            String content = request.getParameter("content");
-            t.setContent(content);
-
             em.getTransaction().begin();
+            em.remove(t);
             em.getTransaction().commit();
             em.close();
 
